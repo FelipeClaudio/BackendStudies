@@ -42,7 +42,6 @@ namespace AsyncProgramming.Definitions
             //Process task as the 
             while(clientResponseTasks.Count != 0)
             {
-                //Returns finished task
                 Task<HttpResponseMessage> finishedTask = await Task.WhenAny(clientResponseTasks);
                 List<Client> clients = await GetClientListFromRequests(finishedTask);
 

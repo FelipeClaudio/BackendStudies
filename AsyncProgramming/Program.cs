@@ -35,7 +35,8 @@ namespace AsyncProgramming
                 new WhenAnyCancelOnFirstException(httpClient),
                 new WhenAnyCancelAfterSomeDelay(httpClient),
                 new WhenAnyRequestMaxConcurrency(httpClient),
-                new WhenAnyEfficient(httpClient)
+                new WhenAnyEfficient(httpClient),
+                new WhenAllOrFirstException(httpClient)
             };
 
             samples.ForEach(sample => sample.Execute());
@@ -56,7 +57,6 @@ namespace AsyncProgramming
             cancellationTokenSource.Dispose();
 
             //Next steps are:
-            //WhenAllOrFirstException
             //Async cache
             //Async producer consumer
             //steps taken from: https://docs.microsoft.com/pt-br/dotnet/standard/asynchronous-programming-patterns/consuming-the-task-based-asynchronous-pattern

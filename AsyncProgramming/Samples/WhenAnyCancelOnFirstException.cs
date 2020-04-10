@@ -23,7 +23,6 @@ namespace AsyncProgramming.Samples
 
         protected override async Task ProcessRequest(List<Task<HttpResponseMessage>> clientResponseTasks)
         {
-            //Returns finished task
             Task<HttpResponseMessage> finishedTask = await Task.WhenAny(clientResponseTasks);
             List<Client> clients = await GetClientListFromRequests(finishedTask);
             LogResults(finishedTask, clients);
