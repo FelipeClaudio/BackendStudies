@@ -17,8 +17,8 @@ namespace AsyncProgramming.Samples
         protected override async Task ExecuteAsync()
         {
             Console.WriteLine("Basic async processing in order");
-            var simpleTask1 = _simpleTask.ExecuteSimpleTask(1, TASK_1_DELAY);
-            var simpleTask2 = _simpleTask.ExecuteSimpleTask(2, TASK_2_DELAY);
+            var simpleTask1 = _simpleTask.ExecuteSimpleTask(1, TasksDelay.TASK_1_DELAY);
+            var simpleTask2 = _simpleTask.ExecuteSimpleTask(2, TasksDelay.TASK_2_DELAY);
 
             //stuff 2 still finishes before stuff1 but its result is only available after stuff1 is finished
             await simpleTask1;

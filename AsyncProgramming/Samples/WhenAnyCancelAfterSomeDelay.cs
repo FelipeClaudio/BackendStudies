@@ -21,7 +21,7 @@ namespace AsyncProgramming.Samples
             //Could not apply Timeout to WhenAny request
             //This will set timeout for the whole processing.
             //In this example, task delay was set to 2500 and 2 of 3 endpoints returns data in 1200 or less
-            //But only the first one is responding in time
+            //The third request is cancelled
             SetTimeout();
             return ProcessRequest(clientResponseTasks);
         }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AsyncProgramming.Samples
 {
-    class BasicProcessingOutOfOrder : BaseSample
+    internal class BasicProcessingOutOfOrder : BaseSample
     {
         private readonly SimpleTask _simpleTask;
 
@@ -17,8 +17,8 @@ namespace AsyncProgramming.Samples
         protected override async Task ExecuteAsync()
         {
             Console.WriteLine("Basic async processing out of order");
-            var simpleTask1 = _simpleTask.ExecuteSimpleTask(1, TASK_1_DELAY);
-            var simpleTask2 = _simpleTask.ExecuteSimpleTask(2, TASK_2_DELAY);
+            var simpleTask1 = _simpleTask.ExecuteSimpleTask(1, TasksDelay.TASK_1_DELAY);
+            var simpleTask2 = _simpleTask.ExecuteSimpleTask(2, TasksDelay.TASK_2_DELAY);
 
             //It is possible to get stuff2 return before stuff1 finishs its processing
             await simpleTask2;

@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace AsyncProgramming
 {
@@ -19,7 +18,7 @@ namespace AsyncProgramming
         //see sample codes below:
         //https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task?view=netframework-4.8
         //https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/
-        public static async Task Main(string[] args)
+        public static void Main()
         {
             Console.WriteLine($"starting at {DateTime.Now.ToString(DateManipulation.dateFormat)}");
             Console.WriteLine(Environment.NewLine);
@@ -45,7 +44,7 @@ namespace AsyncProgramming
             {
                 samples[2].Execute();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Console.WriteLine(Environment.NewLine);
                 Console.WriteLine($"Exception thrown by cancellable task: {ex.Message}");

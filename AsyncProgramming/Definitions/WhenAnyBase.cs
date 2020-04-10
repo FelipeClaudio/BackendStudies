@@ -59,7 +59,7 @@ namespace AsyncProgramming.Definitions
 
         protected void LogResults(Task<HttpResponseMessage> finishedTask, List<Client> clients)
         {
-            clients.ForEach(client => Console.WriteLine($"client: {client.name} has age: {client.age}"));
+            clients.ForEach(client => Console.WriteLine($"client: {client.Name} has age: {client.Age}"));
             Console.WriteLine($"thread with id {finishedTask.Id} finished at {DateTime.Now.ToString(DateManipulation.dateFormat)}");
             Console.WriteLine(Environment.NewLine);
         }
