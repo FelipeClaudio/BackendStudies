@@ -38,7 +38,6 @@ namespace AsyncProgramming.Samples
                     CreateNewRequestTask(numTaskAdded++, clientsInformationsRequest);
                 }
             }
-
         }
 
         private void CreateNewRequestTask(int numTaskAdded, List<Task<HttpResponseMessage>> requests)
