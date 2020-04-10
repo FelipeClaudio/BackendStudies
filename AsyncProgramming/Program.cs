@@ -33,7 +33,8 @@ namespace AsyncProgramming
                 new WhenAnyRequestProcessing(httpClient),
                 new WhenAnyCancelOnFirstSucess(httpClient),
                 new WhenAnyCancelOnFirstException(httpClient),
-                new WhenAnyCancelAfterSomeDelay(httpClient)
+                new WhenAnyCancelAfterSomeDelay(httpClient),
+                new WhenAnyRequestMaxConcurrency(httpClient)
             };
 
             samples.ForEach(sample => sample.Execute());
@@ -47,15 +48,13 @@ namespace AsyncProgramming
             catch(Exception ex)
             {
                 Console.WriteLine(Environment.NewLine);
-                Console.WriteLine($"Exception thrown by cancellable task: {ex.Message}");
+                Console.WriteLine($"Exception thrown by CancellableProcessing: {ex.Message}");
             }
 
             //It is important to dispose cancellation token source
             cancellationTokenSource.Dispose();
 
             //Next steps are:
-            //WhenAny that cancel request after some delay time - not finished yet
-            //WhenAny with maximum concurrent threads
             //Efficent WhenAny
             //WhenAllOrFirstException
             //Async cache
