@@ -41,15 +41,15 @@ namespace AsyncProgramming.Definitions
         {
             while(clientResponseTasks.Count != 0)
             {
-                Task<HttpResponseMessage> finishedTask = await Task.WhenAny(clientResponseTasks);
-                List<Client> clients = await GetClientListFromRequests(finishedTask);
+                Task<HttpResponseMessage> finishedTask = await Task.WhenAny(clientResponseTasks).ConfigureAwait(false);
+                List<Client> clients = await GetClientListFromRequest(finishedTask).ConfigureAwait(false);
 
                 LogResults(finishedTask, clients);
                 clientResponseTasks.Remove(finishedTask);
             }
         }
 
-        protected async Task<List<Client>> GetClientListFromRequests(Task<HttpResponseMessage> finishedTask)
+        protected async Task<List<Client>> GetClientListFromRequest(Task<HttpResponseMessage> finishedTask)
         {
             var clientJson = await finishedTask;
             return JsonConvert.DeserializeObject<List<Client>>(await clientJson.Content.ReadAsStringAsync());

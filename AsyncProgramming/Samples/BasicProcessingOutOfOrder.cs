@@ -21,9 +21,9 @@ namespace AsyncProgramming.Samples
             var simpleTask2 = _simpleTask.ExecuteSimpleTask(2, TasksDelay.TASK_2_DELAY);
 
             //It is possible to get stuff2 return before stuff1 finishs its processing
-            await simpleTask2;
+            await simpleTask2.ConfigureAwait(false);
             Console.WriteLine($"Finished waiting for simple task 2 at {DateTime.Now.ToString(DateManipulation.dateFormat)}");
-            await simpleTask1;
+            await simpleTask1.ConfigureAwait(false);
             Console.WriteLine($"Finished Waiting for simple task 1 at {DateTime.Now.ToString(DateManipulation.dateFormat)}");
             Console.WriteLine(Environment.NewLine);
         }

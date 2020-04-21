@@ -25,7 +25,7 @@ namespace AsyncProgramming.Samples
                 try
                 {
                     await clientResponseTask;
-                    List<Client> clients = await base.GetClientListFromRequests(clientResponseTask);
+                    List<Client> clients = await base.GetClientListFromRequest(clientResponseTask).ConfigureAwait(false);
                     LogResults(clientResponseTask, clients);
                 }
                 catch(Exception ex)

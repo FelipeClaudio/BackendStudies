@@ -26,14 +26,14 @@ namespace AsyncProgramming.Samples
                 //In this case, a task is consumed
                 var consumeTask = Consume();
                 var produceTask = Produce();
-                await Task.WhenAll(consumeTask, produceTask);
+                await Task.WhenAll(consumeTask, produceTask).ConfigureAwait(false);
             }
         }
 
         private async Task Produce()
         {
             Task<HttpResponseMessage> finishedTask = await Task.WhenAny(_clientResponseTasks);
-            List<Client> clients = await GetClientListFromRequests(finishedTask);
+            List<Client> clients = await GetClientListFromRequest(finishedTask);
             Console.WriteLine("Inserted clients in the queue");
 
             LogResults(finishedTask, clients);

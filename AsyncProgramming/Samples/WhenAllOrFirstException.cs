@@ -27,7 +27,8 @@ namespace AsyncProgramming.Samples
                 urls.AddRange(ExternalEndpoints.validClientProviders);
                 List<Task<HttpResponseMessage>> clientResponseTasks =
                     base.RequestEndpointData(urls, _cancellationTokenSource.Token);
-                await Task.WhenAll(clientResponseTasks);
+
+                await Task.WhenAll(clientResponseTasks).ConfigureAwait(false);
 
                 //It's now possible to get results from all request as all task are completed
                 //Note: .Foreach doesn't work as expected because it's returns is void
@@ -35,7 +36,7 @@ namespace AsyncProgramming.Samples
                 //However, foreach will return a Task and allow proper error handling
                 foreach (var request in clientResponseTasks)
                 {
-                    List<Client> clients = await base.GetClientListFromRequests(request);
+                    List<Client> clients = await base.GetClientListFromRequest(request).ConfigureAwait(false);
                     LogResults(request, clients);
                 }                
             }

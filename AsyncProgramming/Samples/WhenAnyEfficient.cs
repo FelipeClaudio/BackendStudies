@@ -22,7 +22,7 @@ namespace AsyncProgramming.Samples
             //The first task to complete continues with defined continuation and returns result
             foreach (var clientResponse in clientResponseTasks)
             {
-                var clients = await base.GetClientListFromRequests(clientResponse);
+                var clients = await base.GetClientListFromRequest(clientResponse).ConfigureAwait(false);
                 base.LogResults(clientResponse, clients);
             };
         }

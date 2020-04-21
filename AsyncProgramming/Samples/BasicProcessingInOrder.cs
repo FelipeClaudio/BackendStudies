@@ -21,9 +21,9 @@ namespace AsyncProgramming.Samples
             var simpleTask2 = _simpleTask.ExecuteSimpleTask(2, TasksDelay.TASK_2_DELAY);
 
             //stuff 2 still finishes before stuff1 but its result is only available after stuff1 is finished
-            await simpleTask1;
+            await simpleTask1.ConfigureAwait(false);
             Console.WriteLine($"Finished waiting for simple task 1 at {DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fff tt")}");
-            await simpleTask2;
+            await simpleTask2.ConfigureAwait(false);
             Console.WriteLine($"Finished waiting for simple task 2 at {DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fff tt")}");
             Console.WriteLine(Environment.NewLine);
         }

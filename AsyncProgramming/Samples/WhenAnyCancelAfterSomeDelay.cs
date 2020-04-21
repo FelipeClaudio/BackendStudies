@@ -9,30 +9,22 @@ namespace AsyncProgramming.Samples
 {
     internal class WhenAnyCancelAfterSomeDelay : WhenAnyBase
     {
-        private readonly CancellationTokenSource _cancellationTokenSource;
+        private CancellationTokenSource _cancellationTokenSource;
         public WhenAnyCancelAfterSomeDelay(HttpClient client) : base(client)
-        {
-            _cancellationTokenSource = new CancellationTokenSource();
+        {         
         }
 
         protected override Task ExecuteAsync()
         {
-            var clientResponseTasks = base.RequestEndpointData(ExternalEndpoints.validClientProviders, _cancellationTokenSource.Token);
-            //Could not apply Timeout to WhenAny request
             //This will set timeout for the whole processing.
             //In this example, task delay was set to 2500 and 2 of 3 endpoints returns data in 1200 or less
-            //The third request is cancelled
-            SetTimeout();
+            //but in order to finish processing, it take more time than it's necessary to gather data from endpoint.
+            //First response comes only after 800ms (avg) after starting request. 
+            //This might be due to multiple usage of httpclient by the sample
+            //Second and third request are cancelled
+            _cancellationTokenSource = new CancellationTokenSource(millisecondsDelay: 2500);
+            var clientResponseTasks = base.RequestEndpointData(ExternalEndpoints.validClientProviders, _cancellationTokenSource.Token);
             return ProcessRequest(clientResponseTasks);
-        }
-
-        private void SetTimeout()
-        {
-            Task.Run(async () =>
-            {
-                await Task.Delay(2500);
-                _cancellationTokenSource.Cancel();
-            });
         }
 
         protected override async Task ProcessRequest(List<Task<HttpResponseMessage>> clientResponseTasks)
@@ -42,7 +34,7 @@ namespace AsyncProgramming.Samples
                 while(clientResponseTasks.Count != 0)
                 {
                     Task<HttpResponseMessage> finishedTask = await Task.WhenAny(clientResponseTasks);
-                    List<Client> clients = await GetClientListFromRequests(finishedTask);
+                    List<Client> clients = await GetClientListFromRequest(finishedTask);
 
                     LogResults(finishedTask, clients);
                     clientResponseTasks.Remove(finishedTask);

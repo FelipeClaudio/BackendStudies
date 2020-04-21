@@ -29,8 +29,8 @@ namespace AsyncProgramming.Samples
 
             while(clientsInformationsRequest.Count > 0)
             {
-                Task<HttpResponseMessage> clientsInformationTask = await Task.WhenAny(clientsInformationsRequest);
-                List<Client> clientsInformation = await base.GetClientListFromRequests(clientsInformationTask);
+                Task<HttpResponseMessage> clientsInformationTask = await Task.WhenAny(clientsInformationsRequest).ConfigureAwait(false);
+                List<Client> clientsInformation = await base.GetClientListFromRequest(clientsInformationTask).ConfigureAwait(false);
                 base.LogResults(clientsInformationTask, clientsInformation);
                 clientsInformationsRequest.Remove(clientsInformationTask);
                 if(numTaskAdded < numOfValidEndpoints)

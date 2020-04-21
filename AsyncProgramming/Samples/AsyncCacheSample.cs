@@ -20,14 +20,13 @@ namespace AsyncProgramming.Samples
             _asyncCache = new AsyncCache<string, List<Client>>(GetClientsFromRequest);
         }
 
-        //It' necessary to process 2-3 times withou caching
+        //It' necessary to process 2-3 times without caching
         //And do the same processing with cache to observe the difference
         protected override async Task ExecuteAsync()
         {
             var url = ExternalEndpoints.validClientProviders[0]; //slowest endpoint
-            await DoRequestWithoutCache(url);
-            await DoRequestWithCache(url);
-
+            await DoRequestWithoutCache(url).ConfigureAwait(false);
+            await DoRequestWithCache(url).ConfigureAwait(false);
         }
         private async Task DoRequestWithoutCache(string url)
         {
@@ -35,7 +34,7 @@ namespace AsyncProgramming.Samples
             for(int i = 0; i < NUM_REQUESTS; i++)
             {
                 PrintThreadInfoForUrl(true, url);
-                await GetClientsFromRequest(url);
+                await GetClientsFromRequest(url).ConfigureAwait(false);
                 PrintThreadInfoForUrl(false, url);
             }
             Console.WriteLine("Finished requests without cache");
@@ -48,7 +47,7 @@ namespace AsyncProgramming.Samples
             for(int i = 0; i < NUM_REQUESTS; i++)
             {
                 PrintThreadInfoForUrl(true, url);
-                await _asyncCache[url];
+                await _asyncCache[url].ConfigureAwait(false);
                 PrintThreadInfoForUrl(false, url);
             }
             Console.WriteLine("Finished requests with cache");
@@ -57,7 +56,7 @@ namespace AsyncProgramming.Samples
 
         private async Task<List<Client>> GetClientsFromRequest(string url)
         {
-            var result = await _httpClient.GetAsync(url);
+            var result = await _httpClient.GetAsync(url).ConfigureAwait(false);
             return JsonConvert.DeserializeObject<List<Client>>(await result.Content.ReadAsStringAsync());   
         }
 

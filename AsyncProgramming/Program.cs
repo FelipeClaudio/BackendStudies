@@ -18,6 +18,9 @@ namespace AsyncProgramming
         //see sample codes below:
         //https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task?view=netframework-4.8
         //https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/
+        //Note2: ConfigureAwait(false) is preferable whenever there is no need to run task in same context
+        //It should be used in every await that meets requiment above
+        //Anti-patterns examples: https://markheath.net/post/async-antipatterns
         public static void Main()
         {
             Console.WriteLine($"starting at {DateTime.Now.ToString(DateManipulation.dateFormat)}");
@@ -31,7 +34,7 @@ namespace AsyncProgramming
                 new BasicProcessingOutOfOrder(),
                 new CancellableProcessing(cancellationTokenSource),
                 new WhenAnyRequestProcessing(httpClient),
-                new WhenAnyCancelOnFirstSucess(httpClient),
+                new WhenAnyCancelOnFirstSuccess(httpClient),
                 new WhenAnyCancelOnFirstException(httpClient),
                 new WhenAnyCancelAfterSomeDelay(httpClient),
                 new WhenAnyRequestMaxConcurrency(httpClient),
@@ -42,7 +45,6 @@ namespace AsyncProgramming
                 new AsyncProducerConsumerCustom(httpClient),
                 new AsyncProducerConsumerBufferBlock(httpClient)
             };
-            samples.Reverse(); //just to show last created samples first
             samples.ForEach(sample => sample.Execute());
 
             //Cancelation token is allready cancelled inside CancellableProcessing
