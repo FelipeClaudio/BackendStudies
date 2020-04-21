@@ -36,9 +36,13 @@ namespace AsyncProgramming
                 new WhenAnyCancelAfterSomeDelay(httpClient),
                 new WhenAnyRequestMaxConcurrency(httpClient),
                 new WhenAnyEfficient(httpClient),
-                new WhenAllOrFirstException(httpClient)
+                new WhenAllOrFirstException(httpClient),
+                new WhenAllIgnoreExceptions(httpClient),
+                new AsyncCacheSample(httpClient),
+                new AsyncProducerConsumerCustom(httpClient),
+                new AsyncProducerConsumerBufferBlock(httpClient)
             };
-
+            samples.Reverse(); //just to show last created samples first
             samples.ForEach(sample => sample.Execute());
 
             //Cancelation token is allready cancelled inside CancellableProcessing
@@ -57,10 +61,9 @@ namespace AsyncProgramming
             cancellationTokenSource.Dispose();
 
             //Next steps are:
-            //Async cache
-            //Async producer consumer
-            //steps taken from: https://docs.microsoft.com/pt-br/dotnet/standard/asynchronous-programming-patterns/consuming-the-task-based-asynchronous-pattern
+            //steps above taken from: https://docs.microsoft.com/pt-br/dotnet/standard/asynchronous-programming-patterns/consuming-the-task-based-asynchronous-pattern
             //async streams
+
             Console.ReadLine();
         }
     }

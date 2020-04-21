@@ -39,7 +39,6 @@ namespace AsyncProgramming.Definitions
 
         protected virtual async Task ProcessRequest(List<Task<HttpResponseMessage>> clientResponseTasks)
         {
-            //Process task as the 
             while(clientResponseTasks.Count != 0)
             {
                 Task<HttpResponseMessage> finishedTask = await Task.WhenAny(clientResponseTasks);
