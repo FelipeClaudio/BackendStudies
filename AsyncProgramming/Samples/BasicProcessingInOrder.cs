@@ -1,5 +1,6 @@
 ﻿using AsyncProgramming.Definitions;
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace AsyncProgramming.Samples
@@ -22,9 +23,9 @@ namespace AsyncProgramming.Samples
 
             //stuff 2 still finishes before stuff1 but its result is only available after stuff1 is finished
             await simpleTask1.ConfigureAwait(false);
-            Console.WriteLine($"Finished waiting for simple task 1 at {DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fff tt")}");
+            Console.WriteLine($"Finished waiting for simple task 1 at {DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fff tt", CultureInfo.InvariantCulture)}");
             await simpleTask2.ConfigureAwait(false);
-            Console.WriteLine($"Finished waiting for simple task 2 at {DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fff tt")}");
+            Console.WriteLine($"Finished waiting for simple task 2 at {DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fff tt", CultureInfo.InvariantCulture)}");
             Console.WriteLine(Environment.NewLine);
         }
     }

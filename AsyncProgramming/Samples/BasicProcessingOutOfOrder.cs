@@ -1,6 +1,7 @@
 ﻿using AsyncProgramming.Definitions;
 using AsyncProgramming.Utils;
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace AsyncProgramming.Samples
@@ -22,9 +23,9 @@ namespace AsyncProgramming.Samples
 
             //It is possible to get stuff2 return before stuff1 finishs its processing
             await simpleTask2.ConfigureAwait(false);
-            Console.WriteLine($"Finished waiting for simple task 2 at {DateTime.Now.ToString(DateManipulation.dateFormat)}");
+            Console.WriteLine($"Finished waiting for simple task 2 at {DateTime.Now.ToString(DateManipulation.dateFormat, CultureInfo.InvariantCulture)}");
             await simpleTask1.ConfigureAwait(false);
-            Console.WriteLine($"Finished Waiting for simple task 1 at {DateTime.Now.ToString(DateManipulation.dateFormat)}");
+            Console.WriteLine($"Finished Waiting for simple task 1 at {DateTime.Now.ToString(DateManipulation.dateFormat, CultureInfo.InvariantCulture)}");
             Console.WriteLine(Environment.NewLine);
         }
     }

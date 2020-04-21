@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AsyncProgramming.Samples
 {
-    internal class WhenAnyCancelOnFirstSuccess : WhenAnyBase
+    internal class WhenAnyCancelOnFirstSuccess : WhenAnyBase, IDisposable
     {
         private readonly CancellationTokenSource _cancellationTokenSource;
         public WhenAnyCancelOnFirstSuccess(HttpClient client) : base(client)
@@ -40,6 +40,11 @@ namespace AsyncProgramming.Samples
                 Console.WriteLine("No other task will execute because first one is finished");
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        public void Dispose()
+        {
+            _cancellationTokenSource.Dispose();
         }
     }
 }

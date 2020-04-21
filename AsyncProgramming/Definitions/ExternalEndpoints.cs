@@ -1,19 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AsyncProgramming.Definitions
 {
     //Endpoints mocked using mockoon
     internal static class ExternalEndpoints
     {
-        public static readonly List<string> validClientProviders = new List<string>
+        public static readonly List<Uri> validClientProviders = new List<Uri>
         {
-            "http://localhost:3001/clients",
-            "http://localhost:3002/clients",
-            "http://localhost:3003/clients"
+            new Uri("http://localhost:3001/clients"),
+            new Uri("http://localhost:3002/clients"),
+            new Uri("http://localhost:3003/clients")
         };
-        public static readonly List<string> invalidClientProvider = new List<string>
+        public static readonly List<Uri> invalidClientProvider = new List<Uri>
         {
-            "http://localhost:3004/clients"
+            new Uri("http://localhost:3004/clients")
         };
     }
 }

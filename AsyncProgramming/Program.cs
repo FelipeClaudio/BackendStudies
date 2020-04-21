@@ -3,6 +3,7 @@ using AsyncProgramming.Samples;
 using AsyncProgramming.Utils;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net.Http;
 using System.Threading;
 
@@ -23,7 +24,7 @@ namespace AsyncProgramming
         //Anti-patterns examples: https://markheath.net/post/async-antipatterns
         public static void Main()
         {
-            Console.WriteLine($"starting at {DateTime.Now.ToString(DateManipulation.dateFormat)}");
+            Console.WriteLine($"starting at {DateTime.Now.ToString(DateManipulation.dateFormat, CultureInfo.InvariantCulture)}");
             Console.WriteLine(Environment.NewLine);
 
             var cancellationTokenSource = new CancellationTokenSource();

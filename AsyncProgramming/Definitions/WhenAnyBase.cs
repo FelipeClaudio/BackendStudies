@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -18,21 +19,21 @@ namespace AsyncProgramming.Definitions
         }
 
         //Start parallel tasks with no cancellation
-        protected List<Task<HttpResponseMessage>> RequestEndpointData(List<string> urls)
+        protected List<Task<HttpResponseMessage>> RequestEndpointData(List<Uri> uris)
         {
-            return urls.Select(url =>
+            return uris.Select(uri =>
                     {
-                        Console.WriteLine($"Started {this.GetType().Name} to endpoint: {url} at {DateTime.Now.ToString(DateManipulation.dateFormat)}");
-                        return _client.GetAsync(url);
+                        Console.WriteLine($"Started {this.GetType().Name} to endpoint: {uri} at {DateTime.Now.ToString(DateManipulation.dateFormat, CultureInfo.InvariantCulture)}");
+                        return _client.GetAsync(uri);
                     }).ToList();
         }
 
-        protected List<Task<HttpResponseMessage>> RequestEndpointData(List<string> urls, CancellationToken cancellationToken)
+        protected List<Task<HttpResponseMessage>> RequestEndpointData(List<Uri> uris, CancellationToken cancellationToken)
         {
-            return urls.Select(url =>
+            return uris.Select(uri =>
             {
-                Console.WriteLine($"Started {this.GetType().Name} to endpoint: {url} at {DateTime.Now.ToString(DateManipulation.dateFormat)}");
-                return _client.GetAsync(url, cancellationToken);
+                Console.WriteLine($"Started {this.GetType().Name} to endpoint: {uri} at {DateTime.Now.ToString(DateManipulation.dateFormat, CultureInfo.InvariantCulture)}");
+                return _client.GetAsync(uri, cancellationToken);
             }).ToList();
         }
 
@@ -51,14 +52,14 @@ namespace AsyncProgramming.Definitions
 
         protected async Task<List<Client>> GetClientListFromRequest(Task<HttpResponseMessage> finishedTask)
         {
-            var clientJson = await finishedTask;
-            return JsonConvert.DeserializeObject<List<Client>>(await clientJson.Content.ReadAsStringAsync());
+            var clientJson = await finishedTask.ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<List<Client>>(await clientJson.Content.ReadAsStringAsync().ConfigureAwait(false));
         }
 
         protected void LogResults(Task<HttpResponseMessage> finishedTask, List<Client> clients)
         {
             clients.ForEach(client => Console.WriteLine($"client: {client.Name} has age: {client.Age}"));
-            Console.WriteLine($"thread with id {finishedTask.Id} finished at {DateTime.Now.ToString(DateManipulation.dateFormat)}");
+            Console.WriteLine($"thread with id {finishedTask.Id} finished at {DateTime.Now.ToString(DateManipulation.dateFormat, CultureInfo.InvariantCulture)}");
             Console.WriteLine(Environment.NewLine);
         }
 

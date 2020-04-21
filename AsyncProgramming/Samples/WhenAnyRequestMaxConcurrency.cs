@@ -2,6 +2,7 @@
 using AsyncProgramming.Utils;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -42,8 +43,8 @@ namespace AsyncProgramming.Samples
 
         private void CreateNewRequestTask(int numTaskAdded, List<Task<HttpResponseMessage>> requests)
         {
-            string url = ExternalEndpoints.validClientProviders[numTaskAdded];
-            Console.WriteLine($"Started {this.GetType().Name} to endpoint: {url} at {DateTime.Now.ToString(DateManipulation.dateFormat)}");
+            Uri uri = ExternalEndpoints.validClientProviders[numTaskAdded];
+            Console.WriteLine($"Started {this.GetType().Name} to endpoint: {uri} at {DateTime.Now.ToString(DateManipulation.dateFormat, CultureInfo.InvariantCulture)}");
             requests.Add( _client.GetAsync(ExternalEndpoints.validClientProviders[numTaskAdded]));
         }
     }

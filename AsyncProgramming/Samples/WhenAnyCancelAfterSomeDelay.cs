@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AsyncProgramming.Samples
 {
-    internal class WhenAnyCancelAfterSomeDelay : WhenAnyBase
+    internal class WhenAnyCancelAfterSomeDelay : WhenAnyBase, IDisposable
     {
         private CancellationTokenSource _cancellationTokenSource;
         public WhenAnyCancelAfterSomeDelay(HttpClient client) : base(client)
@@ -33,8 +33,8 @@ namespace AsyncProgramming.Samples
             {
                 while(clientResponseTasks.Count != 0)
                 {
-                    Task<HttpResponseMessage> finishedTask = await Task.WhenAny(clientResponseTasks);
-                    List<Client> clients = await GetClientListFromRequest(finishedTask);
+                    Task<HttpResponseMessage> finishedTask = await Task.WhenAny(clientResponseTasks).ConfigureAwait(false);
+                    List<Client> clients = await GetClientListFromRequest(finishedTask).ConfigureAwait(false);
 
                     LogResults(finishedTask, clients);
                     clientResponseTasks.Remove(finishedTask);
@@ -46,6 +46,11 @@ namespace AsyncProgramming.Samples
                 Console.WriteLine("There was an invalid request and all operations were cancelled");
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        public void Dispose()
+        {
+            _cancellationTokenSource.Dispose();
         }
     }
 }

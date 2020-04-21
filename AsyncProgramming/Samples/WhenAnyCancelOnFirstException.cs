@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AsyncProgramming.Samples
 {
-    internal class WhenAnyCancelOnFirstException : WhenAnyBase
+    internal class WhenAnyCancelOnFirstException : WhenAnyBase, IDisposable
     {
         private readonly CancellationTokenSource _cancellationTokenSource;
         public WhenAnyCancelOnFirstException(HttpClient client) : base(client)
@@ -17,7 +17,7 @@ namespace AsyncProgramming.Samples
 
         protected override Task ExecuteAsync()
         {
-            var endpoints = new List<string>();
+            var endpoints = new List<Uri>();
             endpoints.AddRange(ExternalEndpoints.invalidClientProvider);
             endpoints.AddRange(ExternalEndpoints.validClientProviders);
             var clientResponseTasks = base.RequestEndpointData(endpoints, _cancellationTokenSource.Token);
@@ -33,9 +33,15 @@ namespace AsyncProgramming.Samples
             catch(Exception ex)
             {
                 _cancellationTokenSource.Cancel();
+                _cancellationTokenSource.Dispose();
                 Console.WriteLine("There was an invalid request and all operations were cancelled");
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        public void Dispose()
+        {
+            _cancellationTokenSource.Dispose();
         }
     }
 }

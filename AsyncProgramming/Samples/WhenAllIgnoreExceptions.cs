@@ -15,16 +15,16 @@ namespace AsyncProgramming.Samples
 
         protected override async Task ExecuteAsync()
         {
-            List<string> urls = new List<string>();
-            urls.AddRange(ExternalEndpoints.invalidClientProvider);
-            urls.AddRange(ExternalEndpoints.validClientProviders);
+            List<Uri> uris = new List<Uri>();
+            uris.AddRange(ExternalEndpoints.invalidClientProvider);
+            uris.AddRange(ExternalEndpoints.validClientProviders);
             List<Task<HttpResponseMessage>> clientResponseTasks =
-                base.RequestEndpointData(urls);
+                base.RequestEndpointData(uris);
             foreach(var clientResponseTask in clientResponseTasks.Interleaved())
             {
                 try
                 {
-                    await clientResponseTask;
+                    await clientResponseTask.ConfigureAwait(false);
                     List<Client> clients = await base.GetClientListFromRequest(clientResponseTask).ConfigureAwait(false);
                     LogResults(clientResponseTask, clients);
                 }

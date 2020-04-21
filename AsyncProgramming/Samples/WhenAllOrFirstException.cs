@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AsyncProgramming.Samples
 {
-    internal class WhenAllOrFirstException : WhenAnyBase
+    internal class WhenAllOrFirstException : WhenAnyBase, IDisposable
     {
         private readonly CancellationTokenSource _cancellationTokenSource;
         //Note: This example doesn't return any result because an exception is always thrown by invalid endpoint
@@ -22,11 +22,11 @@ namespace AsyncProgramming.Samples
         {
             try
             {
-                List<string> urls = new List<string>();
-                urls.AddRange(ExternalEndpoints.invalidClientProvider);
-                urls.AddRange(ExternalEndpoints.validClientProviders);
+                List<Uri> uris = new List<Uri>();
+                uris.AddRange(ExternalEndpoints.invalidClientProvider);
+                uris.AddRange(ExternalEndpoints.validClientProviders);
                 List<Task<HttpResponseMessage>> clientResponseTasks =
-                    base.RequestEndpointData(urls, _cancellationTokenSource.Token);
+                    base.RequestEndpointData(uris, _cancellationTokenSource.Token);
 
                 await Task.WhenAll(clientResponseTasks).ConfigureAwait(false);
 
@@ -46,6 +46,10 @@ namespace AsyncProgramming.Samples
                 _cancellationTokenSource.Dispose();
                 Console.WriteLine($"A task in {this.GetType().Name} thrown exception: {ex.Message}");
             }
+        }
+        public void Dispose()
+        {
+            _cancellationTokenSource.Dispose();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace AsyncProgramming.Definitions
 
         public AsyncCache(Func<TKey, Task<TValue>> valueFactory)
         {
-            _valueFactory = valueFactory ?? throw new ArgumentNullException("value factory cannot be null");
+            _valueFactory = valueFactory ?? throw new ArgumentNullException(nameof(valueFactory));
             _map = new ConcurrentDictionary<TKey, Lazy<Task<TValue>>>();
         }
 
@@ -19,7 +19,7 @@ namespace AsyncProgramming.Definitions
         {
             get
             {
-                key = key ?? throw new ArgumentNullException("key cannot be null");
+                key = key ?? throw new ArgumentNullException(nameof(key));
                 return _map.GetOrAdd(key, toAdd => new Lazy<Task<TValue>>(() => _valueFactory(toAdd))).Value;
             }
         }

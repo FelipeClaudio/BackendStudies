@@ -2,6 +2,7 @@
 using AsyncProgramming.Utils;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -25,7 +26,7 @@ namespace AsyncProgramming.Samples
                 //In this case, a task is consumed
                 var consumeTask = Consume();
                 var produceTask = Produce();
-                await Task.WhenAll(consumeTask, produceTask);
+                await Task.WhenAll(consumeTask, produceTask).ConfigureAwait(false);
             }
         }
 
@@ -44,7 +45,7 @@ namespace AsyncProgramming.Samples
         {
             List<Client> result = await _asyncProducerConsumer.Take().ConfigureAwait(false);
             Console.WriteLine("Removing clients from queue");
-            result.ForEach(r => Console.WriteLine($"Client name: {r.Name} age: {r.Age} at time {DateTime.Now.ToString(DateManipulation.dateFormat)}"));
+            result.ForEach(r => Console.WriteLine($"Client name: {r.Name} age: {r.Age} at time {DateTime.Now.ToString(DateManipulation.dateFormat, CultureInfo.InvariantCulture)}"));
             Console.WriteLine(Environment.NewLine);
         }
     }
